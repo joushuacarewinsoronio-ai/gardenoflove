@@ -2,25 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Sweet Garden 💕</title>
     <style>
+        /* ----- CORE LAYOUT FIXES ----- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd1e8 100%);
+            background: linear-gradient(135deg, #ffe0f0 0%, #ffc0e0 50%, #ffb0d0 100%);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Background Particles */
+        /* Background Particles - Fixed Positioning */
         .bg-particles {
             position: fixed;
             top: 0;
@@ -28,94 +32,179 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 0;
             overflow: hidden;
         }
 
         .particle {
             position: absolute;
-            font-size: 20px;
-            animation: floatUp 20s infinite linear;
-            opacity: 0.7;
+            font-size: 22px;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+            filter: blur(0.5px);
         }
 
-        @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
 
-        /* Page Container */
+        /* Music Player - Fixed at Top */
+        .music-player {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px;
+            border-radius: 0 0 25px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 105, 180, 0.2);
+            height: 60px;
+        }
+
+        .music-control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+        }
+
+        .music-control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+        }
+
+        .music-control-btn.playing {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+        }
+
+        .music-info {
+            font-size: 14px;
+            color: #d63384;
+            font-weight: 700;
+            white-space: nowrap;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .volume-icon {
+            font-size: 18px;
+            color: #ff1493;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #ff69b4 0%, #ff69b4 55%, #ffe0f0 55%, #ffe0f0 100%);
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #ff1493;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.5);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #ff1493;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.5);
+        }
+
+        /* Page Container - Fixed Layout */
         .page {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 60px);
             display: none;
-            min-height: 100vh;
-            position: relative;
+            align-items: center;
+            justify-content: center;
             z-index: 10;
+            padding: 20px;
         }
 
         .page.active {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
         }
 
-        /* Intro Page */
+        /* Intro Page - Properly Centered */
         .intro-container {
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(135deg, #ffffff 0%, #fff5fa 100%);
             padding: 40px;
             border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
-            backdrop-filter: blur(10px);
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(255, 105, 180, 0.3);
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 20;
             border: 3px solid rgba(255, 105, 180, 0.2);
             animation: slideUp 0.8s ease-out;
         }
 
         .intro-title {
-            font-size: clamp(2rem, 5vw, 3rem);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             color: #ff1493;
             margin-bottom: 25px;
-            text-shadow: 2px 2px 4px rgba(255, 20, 147, 0.2);
-            animation: titleGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes titleGlow {
-            0%, 100% { text-shadow: 2px 2px 4px rgba(255, 20, 147, 0.2); }
-            50% { text-shadow: 2px 2px 20px rgba(255, 20, 147, 0.4); }
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.2);
+            line-height: 1.2;
         }
 
         .intro-message {
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
-            color: #ff69b4;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            color: #d63384;
             margin-bottom: 20px;
             font-weight: 600;
         }
 
         .intro-submessage {
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            color: #ff69b4;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: #c2185b;
+            line-height: 1.8;
+            margin-bottom: 35px;
         }
 
         .start-button {
-            padding: 18px 40px;
-            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            padding: 18px 45px;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
             background: linear-gradient(135deg, #ff69b4, #ff1493);
             color: white;
             border: none;
@@ -125,77 +214,66 @@
             transition: all 0.3s ease;
             box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            animation: buttonPulse 2s infinite;
-        }
-
-        @keyframes buttonPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            letter-spacing: 1px;
         }
 
         .start-button:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
             box-shadow: 0 12px 35px rgba(255, 105, 180, 0.6);
         }
 
         /* Garden Page */
         .garden-container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 900px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 30px;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+            margin: 20px auto;
+            position: relative;
+            z-index: 20;
         }
 
         .flower-selector {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             padding: 20px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
             flex-wrap: wrap;
             justify-content: center;
+            width: 100%;
         }
 
         .flower-option {
-            width: 80px;
-            height: 80px;
-            border: 3px solid #ff69b4;
+            width: 70px;
+            height: 70px;
             border-radius: 20px;
+            background: white;
+            border: 3px solid transparent;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .flower-option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, transparent, rgba(255, 105, 180, 0.1));
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-
-        .flower-option:hover::before {
-            transform: translateX(0);
+        .flower-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
         }
 
         .flower-option.selected {
             border-color: #ff1493;
-            background: linear-gradient(135deg, #fff0f5, #ffe0f0);
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(255, 20, 147, 0.4);
+            background: linear-gradient(135deg, #ffe0f0, #ffd1e8);
+            box-shadow: 0 8px 25px rgba(255, 20, 147, 0.5);
         }
 
         .flower-option.main-tulip.selected {
@@ -205,71 +283,75 @@
         }
 
         .flower-option img {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             object-fit: contain;
         }
 
         .garden-ground {
             width: 100%;
-            min-height: 400px;
+            min-height: 350px;
             background: linear-gradient(to bottom, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%);
-            border-radius: 30px;
+            border-radius: 25px;
             position: relative;
             cursor: crosshair;
             box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            border: 5px solid rgba(76, 175, 80, 0.3);
+            border: 4px solid rgba(76, 175, 80, 0.3);
         }
 
         /* Touch-to-Grow Page */
         .touch-grow-container {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             position: relative;
             background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%);
             cursor: crosshair;
             overflow: hidden;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+            margin: 20px;
+            max-width: 1200px;
         }
 
         .touch-hint {
             position: absolute;
-            top: 50px;
+            top: 30px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.95);
-            padding: 20px 40px;
-            border-radius: 50px;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            padding: 15px 30px;
+            border-radius: 40px;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
             color: #ff1493;
             font-weight: 700;
-            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
             z-index: 100;
             animation: bounce 2s infinite;
-            border: 3px solid rgba(255, 105, 180, 0.3);
+            border: 2px solid rgba(255, 105, 180, 0.3);
         }
 
         /* Navigation Buttons */
         .nav-button {
             position: fixed;
-            padding: 15px 30px;
+            padding: 12px 25px;
             background: linear-gradient(135deg, #ff69b4, #ff1493);
             color: white;
             border: none;
-            border-radius: 50px;
+            border-radius: 40px;
             cursor: pointer;
             font-weight: 700;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-size: clamp(0.9rem, 2vw, 1rem);
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
             z-index: 1000;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .nav-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(255, 105, 180, 0.6);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.6);
         }
 
         .prev-button {
@@ -282,127 +364,33 @@
             right: 30px;
         }
 
-        /* Music Player */
-        .music-player {
+        /* Clear Button */
+        .clear-button {
             position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px 25px;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
-            z-index: 9999;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 105, 180, 0.3);
-        }
-
-        .music-toggle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            top: 80px;
+            right: 30px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ff4444);
             color: white;
             border: none;
+            border-radius: 40px;
             cursor: pointer;
-            font-size: 24px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
-        }
-
-        .music-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.6);
-        }
-
-        .music-toggle.playing {
-            animation: musicPulse 2s infinite;
-        }
-
-        @keyframes musicPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .music-info {
-            color: #ff1493;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .volume-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .volume-slider {
-            width: 100px;
-            height: 6px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: linear-gradient(to right, #ff69b4, #ff1493);
-            border-radius: 5px;
-            outline: none;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border: 3px solid #ff1493;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.3);
-        }
-
-        .volume-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        /* Music Status Indicator */
-        .music-status {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px 20px;
-            border-radius: 50px;
-            color: #ff1493;
             font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
-            z-index: 9999;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(255, 68, 68, 0.4);
+            z-index: 1000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
             gap: 8px;
-            border: 2px solid rgba(255, 105, 180, 0.3);
-            backdrop-filter: blur(10px);
         }
 
-        .music-status.playing {
-            animation: statusPulse 2s infinite ease-in-out;
-        }
-
-        @keyframes statusPulse {
-            0%, 100% { box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3); }
-            50% { box-shadow: 0 8px 30px rgba(255, 105, 180, 0.5); }
-        }
-
-        .music-icon {
-            font-size: 20px;
-            animation: rotate 3s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .clear-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 68, 68, 0.6);
+            background: linear-gradient(135deg, #ff4444, #ff2222);
         }
 
         /* Letter Messages */
@@ -410,13 +398,13 @@
             position: absolute;
             background: rgba(255, 255, 255, 0.95);
             color: #d63384;
-            padding: 12px 18px;
+            padding: 10px 15px;
             border-radius: 20px;
             font-size: clamp(0.8rem, 2vw, 1rem);
             font-weight: 600;
-            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
             z-index: 100;
-            max-width: 250px;
+            max-width: 220px;
             text-align: center;
             border: 2px solid rgba(255, 105, 180, 0.3);
             font-family: 'Georgia', serif;
@@ -429,7 +417,7 @@
         .heart-effect {
             position: absolute;
             color: #ff1493;
-            font-size: 24px;
+            font-size: 22px;
             animation: heartFloat 3s ease-out forwards;
             pointer-events: none;
             z-index: 50;
@@ -437,417 +425,262 @@
         }
 
         .heart-effect.massive {
-            font-size: 36px;
+            font-size: 32px;
             animation: massiveHeartFloat 4s ease-out forwards;
         }
 
-        .heart-effect.burst {
-            font-size: 30px;
-            animation: heartBurst 2s ease-out forwards;
-        }
-
         @keyframes massiveHeartFloat {
-            0% {
-                transform: translateY(0) scale(0) rotate(0deg);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-60px) scale(1.8) rotate(180deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-120px) scale(1) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes heartBurst {
-            0% {
-                transform: translateY(0) scale(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-50px) scale(1.3) rotate(90deg);
-                opacity: 0;
-            }
-        }
-
-        /* PNG Flowers */
-        .png-flower {
-            position: absolute;
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
-            animation: bloom 0.6s ease-out;
-        }
-
-        .png-flower.planted {
-            width: clamp(60px, 8vw, 100px);
-            height: clamp(60px, 8vw, 100px);
-        }
-
-        .png-flower.grown {
-            width: clamp(80px, 10vw, 120px);
-            height: clamp(80px, 10vw, 120px);
-        }
-
-        .png-flower:hover {
-            transform: scale(1.15);
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-        }
-
-        .png-flower.main-tulip {
-            filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.8));
-            animation: bloom 0.6s ease-out, pulse 2s infinite ease-in-out;
-        }
-
-        /* Autoplay Indicator */
-        .autoplay-indicator {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.98);
-            padding: 40px 50px;
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.5);
-            z-index: 20000;
-            text-align: center;
-            display: none;
-            border: 3px solid rgba(255, 105, 180, 0.4);
-            backdrop-filter: blur(10px);
-        }
-
-        .autoplay-indicator.show {
-            display: block;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .autoplay-indicator h3 {
-            color: #ff1493;
-            margin-bottom: 15px;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-        }
-
-        .autoplay-indicator p {
-            color: #ff69b4;
-            font-size: clamp(1rem, 2.5vw, 1.3rem);
-            margin-bottom: 25px;
-        }
-
-        .autoplay-button {
-            padding: 15px 35px;
-            background: linear-gradient(135deg, #ff69b4, #ff1493);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: clamp(0.9rem, 2vw, 1.2rem);
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
-        }
-
-        .autoplay-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 35px rgba(255, 105, 180, 0.6);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translate(-50%, -40%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
-        }
-
-        @keyframes bloom {
-            0% {
-                transform: scale(0) translateY(30px);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
+            0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-50px) scale(1.6) rotate(180deg); opacity: 1; }
+            100% { transform: translateY(-100px) scale(1) rotate(360deg); opacity: 0; }
         }
 
         @keyframes heartFloat {
-            0% {
-                transform: translateY(0) scale(0);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-40px) scale(1.3);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-80px) scale(0.9);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(0); opacity: 1; }
+            50% { transform: translateY(-35px) scale(1.2); opacity: 1; }
+            100% { transform: translateY(-70px) scale(0.9); opacity: 0; }
         }
 
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(15px); }
-            20% { opacity: 1; transform: translateY(0); }
-            80% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-15px); }
+        .png-flower {
+            position: absolute;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+            animation: bloom 0.6s ease-out;
+            cursor: pointer;
         }
 
-        @keyframes slideUp {
-            from {
-                transform: translateX(-50%) translateY(100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(-50%) translateY(0);
-                opacity: 1;
-            }
+        .png-flower.planted {
+            width: clamp(50px, 7vw, 80px);
+            height: clamp(50px, 7vw, 80px);
+        }
+
+        .png-flower.grown {
+            width: clamp(70px, 9vw, 100px);
+            height: clamp(70px, 9vw, 100px);
+        }
+
+        .png-flower.main-tulip {
+            filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.9));
+            animation: bloom 0.6s ease-out, pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes bloom {
+            0% { transform: scale(0) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
         }
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
+        }
+
+        /* Clear Animation */
+        @keyframes clearFade {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        }
+
+        .clearing {
+            animation: clearFade 0.5s ease-out forwards;
         }
 
         /* Responsive Design */
-        @media (max-width: 1200px) {
-            .garden-container {
-                max-width: 100%;
-                padding: 0 20px;
-            }
-        }
-
         @media (max-width: 768px) {
-            .intro-container {
-                padding: 30px 20px;
-                margin: 10px;
-            }
-
-            .flower-selector {
-                padding: 15px;
+            .music-player {
+                height: 50px;
+                padding: 8px 15px;
                 gap: 15px;
             }
-
-            .flower-option {
-                width: 70px;
-                height: 70px;
+            
+            .music-control-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
             }
-
-            .flower-option img {
-                width: 50px;
-                height: 50px;
-            }
-
-            .garden-ground {
-                min-height: 350px;
-            }
-
-            .music-player {
-                bottom: 20px;
-                padding: 12px 20px;
-                gap: 12px;
-            }
-
-            .music-toggle {
-                width: 45px;
-                height: 45px;
-                font-size: 20px;
-            }
-
+            
             .music-info {
                 font-size: 12px;
+                min-width: 100px;
             }
-
+            
             .volume-slider {
-                width: 80px;
+                width: 60px;
             }
-
-            .music-status {
-                top: 20px;
-                right: 20px;
-                padding: 10px 15px;
-                font-size: 12px;
+            
+            .page {
+                top: 50px;
+                height: calc(100vh - 50px);
             }
-
-            .nav-button {
-                padding: 12px 25px;
-                font-size: 0.9rem;
-            }
-
-            .prev-button {
-                bottom: 20px;
-                left: 20px;
-            }
-
-            .next-button {
-                bottom: 20px;
-                right: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
+            
             .intro-container {
-                padding: 25px 15px;
+                padding: 20px;
+                margin: 10px;
             }
-
-            .flower-selector {
-                gap: 10px;
+            
+            .garden-container {
+                padding: 15px;
+                margin: 10px;
             }
-
+            
             .flower-option {
                 width: 60px;
                 height: 60px;
             }
-
+            
             .flower-option img {
-                width: 45px;
-                height: 45px;
+                width: 40px;
+                height: 40px;
             }
-
+            
             .garden-ground {
-                min-height: 300px;
+                min-height: 280px;
             }
-
-            .music-player {
-                bottom: 15px;
-                padding: 10px 15px;
-            }
-
-            .volume-control {
-                display: none;
-            }
-
-            .music-status {
-                display: none;
-            }
-
-            .nav-button {
-                padding: 10px 20px;
+            
+            .clear-button {
+                top: 65px;
+                right: 15px;
+                padding: 8px 16px;
                 font-size: 0.8rem;
             }
-        }
-
-        @media (min-width: 1400px) {
-            .intro-container {
-                padding: 50px;
+            
+            .nav-button {
+                bottom: 20px;
+                padding: 10px 20px;
             }
-
-            .flower-option {
-                width: 100px;
-                height: 100px;
+            
+            .prev-button {
+                left: 15px;
             }
-
-            .flower-option img {
-                width: 75px;
-                height: 75px;
+            
+            .next-button {
+                right: 15px;
             }
-
-            .garden-ground {
-                min-height: 500px;
+            
+            .touch-hint {
+                padding: 12px 20px;
+                font-size: 1rem;
             }
-
-            .png-flower.planted {
-                width: 120px;
-                height: 120px;
-            }
-
-            .png-flower.grown {
-                width: 150px;
-                height: 150px;
+            
+            .touch-grow-container {
+                margin: 10px;
             }
         }
 
-        /* Tablet Specific */
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .intro-container {
-                max-width: 500px;
+        @media (max-width: 480px) {
+            .music-player {
+                height: 45px;
+                gap: 10px;
             }
-
+            
+            .music-control-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+            
+            .music-info {
+                font-size: 11px;
+                min-width: 80px;
+            }
+            
+            .volume-slider {
+                width: 50px;
+            }
+            
+            .page {
+                top: 45px;
+                height: calc(100vh - 45px);
+            }
+            
+            .intro-title {
+                font-size: 2rem;
+            }
+            
+            .intro-submessage {
+                font-size: 0.9rem;
+            }
+            
             .flower-option {
-                width: 75px;
-                height: 75px;
+                width: 50px;
+                height: 50px;
             }
-
+            
             .flower-option img {
-                width: 55px;
-                height: 55px;
+                width: 32px;
+                height: 32px;
             }
-
-            .garden-ground {
-                min-height: 400px;
+            
+            .start-button {
+                padding: 14px 30px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Background Particles -->
     <div class="bg-particles" id="bgParticles"></div>
 
-    <!-- Background Music -->
+    <!-- AUDIO: the song file must be in same folder, otherwise fallback silent -->
     <audio id="backgroundMusic" loop preload="auto">
         <source src="Michal Leah - The Way I Love You.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
     </audio>
 
-    <!-- Music Status Indicator -->
-    <div class="music-status" id="musicStatus">
-        <span class="music-icon">🎵</span>
-        <span id="statusText">Loading...</span>
-    </div>
-
-    <!-- Music Player -->
+    <!-- Music Player - Fixed at Top -->
     <div class="music-player" id="musicPlayer">
-        <button class="music-toggle" id="musicToggle">🎵</button>
+        <button class="music-control-btn" id="musicToggle">▶️</button>
         <span class="music-info">The Way I Love You</span>
         <div class="volume-control">
-            <span style="color: #ff1493; font-size: 18px;">🔊</span>
-            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="60">
+            <span class="volume-icon">🔊</span>
+            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="55">
         </div>
     </div>
 
-    <!-- Autoplay Indicator -->
-    <div class="autoplay-indicator" id="autoplayIndicator">
-        <h3>🎵 Enable Music 🎵</h3>
-        <p>Click to play "The Way I Love You"</p>
-        <button class="autoplay-button" id="autoplayButton">Play Music</button>
-    </div>
-
-    <!-- Page 1: Intro Page -->
+    <!-- Page 1 Intro -->
     <div class="page active" id="introPage">
         <div class="intro-container">
             <h1 class="intro-title">💕 Our Sweet Garden 💕</h1>
-            <p class="intro-message">
-                Welcome to our magical garden!
-            </p>
+            <p class="intro-message">Welcome to our magical garden!</p>
             <p class="intro-submessage">
-                I created this special place just for you! 🌸
-                The main tulip is my absolute favorite - it's covered in hearts just like my love for you!
-                Plant beautiful flowers and watch our love bloom.
-                Each flower holds a special memory of us.
-                Let's create our garden of dreams together! 💖
+                I created this special place just for you! 🌸<br>
+                The main tulip is my absolute favorite - it's covered in hearts just like my love for you!<br>
+                Plant beautiful flowers and watch our love bloom.<br>
+                Each flower holds a special memory. Let's create our garden of dreams together! 💖
             </p>
             <button class="start-button" id="startButton">✨ Let's Plant! ✨</button>
         </div>
     </div>
 
-    <!-- Page 2: Garden Page -->
+    <!-- Page 2 Garden -->
     <div class="page" id="gardenPage">
+        <!-- Clear Button (only visible on garden page) -->
+        <button class="clear-button" id="clearButton">🗑️ Clear Garden</button>
+        
         <div class="garden-container">
-            <div class="flower-selector" id="flowerSelector">
-                <!-- Flowers will be loaded dynamically -->
-            </div>
+            <div class="flower-selector" id="flowerSelector"></div>
             <div class="garden-ground" id="gardenGround"></div>
-            <button class="nav-button prev-button" id="gardenPrevButton">💕 Back</button>
-            <button class="nav-button next-button" id="gardenNextButton">🌸 Magic Garden</button>
         </div>
+        
+        <button class="nav-button prev-button" id="gardenPrevButton">💕 Back</button>
+        <button class="nav-button next-button" id="gardenNextButton">🌸 Magic Garden</button>
     </div>
 
-    <!-- Page 3: Touch-to-Grow Page (Magic Garden) -->
+    <!-- Page 3 Touch-to-Grow -->
     <div class="page" id="touchGrowPage">
         <div class="touch-grow-container" id="touchGrowContainer">
             <div class="touch-hint">🌸 Click Anywhere for Magic Flowers! 🌸</div>
@@ -856,573 +689,351 @@
     </div>
 
     <script>
-        // Flower data
+        // ----- FLOWER DATA WITH EXACT FILENAMES from the image description -----
         const flowerData = {
-            rose: {
-                files: ['rose1.png', 'rose2.png', 'rose3.png'],
-                category: 'rose',
-                messages: [
-                    "A rose for my love, as beautiful as you! 🌹",
-                    "Every rose petal holds our memories! 💕",
-                    "Roses bloom because of your love! 🌹"
-                ]
-            },
             mainTulip: {
                 files: ['Tulip Main.png'],
                 category: 'main-tulip',
-                messages: [
-                    "My special tulip, covered in hearts for you! 💕💕💕",
-                    "This tulip holds all my love! 💖💖💖",
-                    "Hearts bloom wherever this tulip grows! 💝💝💝"
-                ],
+                messages: ["My special tulip, covered in hearts for you! 💕💕💕", "This tulip holds all my love! 💖💖", "Hearts bloom wherever this tulip grows! 💝💝💝"],
                 isMain: true
             },
+            rose: {
+                files: ['rose1.png', 'rose2.png', 'rose3.png'],
+                category: 'rose',
+                messages: ["A rose for my love, as beautiful as you! 🌹", "Every rose petal holds our memories! 💕", "Roses bloom because of your love! 🌹"]
+            },
             tulip: {
-                files: ['Tulip 1.png', 'Tulip 2.png', 'Tulip 3.png'],
+                files: ['Tulip1.png', 'Tulip2.png', 'Tulip 3.png'],
                 category: 'tulip',
-                messages: [
-                    "My favorite tulips, just like you! 💕",
-                    "Tulips dance when you're near! 🌷",
-                    "These tulips bloom only for you! 🌷"
-                ]
+                messages: ["My favorite tulips, just like you! 💕", "Tulips dance when you're near! 🌷", "These tulips bloom only for you! 🌷"]
             },
             flower: {
                 files: ['flower1.png', 'flower2.png', 'flower3.png'],
                 category: 'flower',
-                messages: [
-                    "A flower for my flower! 🌸",
-                    "Blooming with love for you! 💐",
-                    "Every flower tells our story! 🌼"
-                ]
+                messages: ["A flower for my flower! 🌸", "Blooming with love for you! 💐", "Every flower tells our story! 🌼"]
             }
         };
 
-        // Create background particles
+        // Background particles
         function createBackgroundParticles() {
             const container = document.getElementById('bgParticles');
+            container.innerHTML = '';
             const particles = ['🌸', '💕', '🌷', '🌹', '💖', '✨', '💝', '🌺'];
-            
-            // Adjust particle count based on screen size
-            const particleCount = window.innerWidth < 768 ? 10 : window.innerWidth < 1200 ? 12 : 15;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                particle.textContent = particles[Math.floor(Math.random() * particles.length)];
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-                particle.style.fontSize = (window.innerWidth < 768 ? '16px' : '20px');
-                container.appendChild(particle);
+            const count = window.innerWidth < 480 ? 8 : window.innerWidth < 768 ? 12 : 18;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.textContent = particles[Math.floor(Math.random() * particles.length)];
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 15 + 's';
+                p.style.animationDuration = (12 + Math.random() * 12) + 's';
+                p.style.fontSize = window.innerWidth < 480 ? '14px' : window.innerWidth < 768 ? '18px' : '22px';
+                container.appendChild(p);
             }
         }
 
-        // Initialize flower selector
-        function initializeFlowerSelector() {
+        // Flower selector (Main Tulip first!)
+        function initFlowerSelector() {
             const selector = document.getElementById('flowerSelector');
             selector.innerHTML = '';
-            
-            // Order: Main Tulip first, then others
             const order = ['mainTulip', 'rose', 'tulip', 'flower'];
-            
-            order.forEach((type, index) => {
-                const option = document.createElement('div');
-                option.classList.add('flower-option');
-                if (type === 'mainTulip') {
-                    option.classList.add('main-tulip');
-                }
-                if (index === 0) option.classList.add('selected');
-                
+            order.forEach((type, idx) => {
+                const div = document.createElement('div');
+                div.classList.add('flower-option');
+                if (type === 'mainTulip') div.classList.add('main-tulip');
+                if (idx === 0) div.classList.add('selected');
                 const img = document.createElement('img');
                 img.src = `flowers/${flowerData[type].files[0]}`;
-                img.alt = `${type} flower`;
-                img.onerror = function() {
-                    this.style.display = 'none';
-                    option.style.background = `linear-gradient(135deg, #ff69b4, #ff1493)`;
-                    option.style.width = '65px';
-                    option.style.height = '65px';
-                    option.style.borderRadius = '15px';
+                img.alt = type;
+                img.onerror = () => { 
+                    img.style.display = 'none'; 
+                    div.style.background = '#ffb6c1'; 
+                    div.style.fontSize = '24px';
+                    div.textContent = type === 'mainTulip' ? '💕' : '🌸'; 
                 };
-                
-                option.appendChild(img);
-                option.dataset.flower = type;
-                selector.appendChild(option);
+                div.appendChild(img);
+                div.dataset.flower = type;
+                selector.appendChild(div);
             });
         }
 
-        // Create massive heart effect for main tulip
+        // Heart helpers
         function createMassiveHeartEffect(x, y, container) {
-            const hearts = ['💕', '💖', '💗', '💝', '❤️', '💘', '💞', '💓'];
-            const heartCount = window.innerWidth < 768 ? 10 : 15;
-            
-            for (let i = 0; i < heartCount; i++) {
+            const hearts = ['💕', '💖', '💗', '💝', '❤️', '💘'];
+            const count = window.innerWidth < 480 ? 6 : window.innerWidth < 768 ? 10 : 14;
+            for (let i = 0; i < count; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    const heartType = hearts[Math.floor(Math.random() * hearts.length)];
-                    const size = Math.random() > 0.5 ? 'massive' : 'burst';
-                    heart.classList.add('heart-effect', size);
-                    heart.textContent = heartType;
-                    
-                    // Create circular burst pattern
-                    const angle = (i / heartCount) * Math.PI * 2;
-                    const distance = window.innerWidth < 768 ? 30 : 40 + Math.random() * 60;
-                    heart.style.left = `${x + Math.cos(angle) * distance}px`;
-                    heart.style.top = `${y + Math.sin(angle) * distance}px`;
-                    
+                    heart.classList.add('heart-effect', 'massive');
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    const angle = (i / count) * Math.PI * 2;
+                    const dist = window.innerWidth < 480 ? 25 : 35 + Math.random() * 30;
+                    heart.style.left = `${x + Math.cos(angle) * dist}px`;
+                    heart.style.top = `${y + Math.sin(angle) * dist}px`;
                     container.appendChild(heart);
-                    
-                    setTimeout(() => heart.remove(), 4000);
-                }, i * 40);
+                    setTimeout(() => heart.remove(), 3500);
+                }, i * 45);
             }
         }
 
-        // Create regular heart effect
         function createHeartEffect(x, y, container) {
-            const hearts = ['💕', '💖', '💗', '💝', '❤️'];
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < 5; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
                     heart.classList.add('heart-effect');
-                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.textContent = ['💕','💖','💗'][Math.floor(Math.random()*3)];
                     heart.style.left = `${x + (Math.random() - 0.5) * 50}px`;
                     heart.style.top = `${y + (Math.random() - 0.5) * 50}px`;
                     container.appendChild(heart);
-                    
-                    setTimeout(() => heart.remove(), 3000);
-                }, i * 150);
+                    setTimeout(() => heart.remove(), 2800);
+                }, i * 100);
             }
         }
 
-        // Show letter message
         function showLetterMessage(x, y, message, container) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('letter-message');
-            messageElement.textContent = message;
-            
-            const containerRect = container.getBoundingClientRect();
-            let messageX = x - containerRect.left - 110;
-            let messageY = y - containerRect.top - 70;
-            
-            // Adjust message size for mobile
-            if (window.innerWidth < 768) {
-                messageX = x - containerRect.left - 75;
-                messageY = y - containerRect.top - 50;
-            }
-            
-            if (messageX < 10) messageX = 10;
-            if (messageX > containerRect.width - 230) messageX = containerRect.width - 230;
-            if (messageY < 10) messageY = 10;
-            
-            messageElement.style.left = `${messageX}px`;
-            messageElement.style.top = `${messageY}px`;
-            
-            container.appendChild(messageElement);
-            
-            setTimeout(() => {
-                messageElement.remove();
-            }, 4000);
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('letter-message');
+            msgDiv.textContent = message;
+            const rect = container.getBoundingClientRect();
+            let leftOff = x - rect.left - 90;
+            let topOff = y - rect.top - 50;
+            if (leftOff < 10) leftOff = 10;
+            if (leftOff > rect.width - 190) leftOff = rect.width - 190;
+            if (topOff < 10) topOff = 10;
+            msgDiv.style.left = `${leftOff}px`;
+            msgDiv.style.top = `${topOff}px`;
+            container.appendChild(msgDiv);
+            setTimeout(() => msgDiv.remove(), 3800);
         }
 
-        // Create PNG flower element
-        function createPngFlower(type, className = 'planted') {
-            const flower = document.createElement('img');
-            flower.classList.add('png-flower', className);
-            
+        function createPngFlower(type, sizeClass = 'planted') {
+            const img = document.createElement('img');
+            img.classList.add('png-flower', sizeClass);
             const files = flowerData[type].files;
-            const randomFile = files[Math.floor(Math.random() * files.length)];
-            flower.src = `flowers/${randomFile}`;
-            flower.alt = `${type} flower`;
-            
-            if (type === 'mainTulip') {
-                flower.classList.add('main-tulip');
-            } else if (type === 'tulip') {
-                flower.classList.add('tulip');
-            }
-            
-            flower.onerror = function() {
-                console.error(`Failed to load flower: ${randomFile}`);
-                this.style.background = `linear-gradient(135deg, #ff69b4, #ff1493)`;
-                this.style.width = '60px';
-                this.style.height = '60px';
-                this.style.borderRadius = '50%';
-                this.src = '';
+            const file = files[Math.floor(Math.random() * files.length)];
+            img.src = `flowers/${file}`;
+            img.alt = type;
+            if (type === 'mainTulip') img.classList.add('main-tulip');
+            img.onerror = () => { 
+                img.style.background = '#ffb6c1'; 
+                img.style.borderRadius = '40%'; 
+                img.style.padding = '8px'; 
+                img.src = ''; 
+                img.style.display = 'flex';
+                img.style.alignItems = 'center';
+                img.style.justifyContent = 'center';
+                img.style.fontSize = '30px';
+                img.textContent = type === 'mainTulip' ? '💕' : '🌸';
             };
-            
-            return flower;
+            return img;
         }
 
-        // Page navigation
-        const pages = {
-            intro: document.getElementById('introPage'),
-            garden: document.getElementById('gardenPage'),
-            touchGrow: document.getElementById('touchGrowPage')
-        };
-
-        function showPage(pageName) {
-            Object.values(pages).forEach(page => {
-                page.classList.remove('active');
-            });
-            pages[pageName].classList.add('active');
-            
-            window.scrollTo(0, 0);
-        }
-
-        // Music Player functionality
-        const backgroundMusic = document.getElementById('backgroundMusic');
-        const musicToggle = document.getElementById('musicToggle');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const autoplayIndicator = document.getElementById('autoplayIndicator');
-        const autoplayButton = document.getElementById('autoplayButton');
-        const musicStatus = document.getElementById('musicStatus');
-        const statusText = document.getElementById('statusText');
-        
-        let isMusicPlaying = false;
-        let autoplayAttempted = false;
-        let musicInitialized = false;
-
-        // Set initial volume
-        backgroundMusic.volume = 0.6;
-
-        // Update music status display
-        function updateMusicStatus(playing) {
-            if (playing) {
-                statusText.textContent = 'Playing...';
-                musicStatus.classList.add('playing');
-                musicToggle.classList.add('playing');
-                musicToggle.textContent = '🔇';
-            } else {
-                statusText.textContent = 'Paused';
-                musicStatus.classList.remove('playing');
-                musicToggle.classList.remove('playing');
-                musicToggle.textContent = '🎵';
-            }
-        }
-
-        // Initialize music
-        function initializeMusic() {
-            if (musicInitialized) return;
-            musicInitialized = true;
-            
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            const audioContext = new AudioContext();
-            
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            
-            backgroundMusic.play().then(() => {
-                isMusicPlaying = true;
-                updateMusicStatus(true);
-                console.log('Music autoplay successful');
-            }).catch(error => {
-                console.log('Autoplay prevented, will show prompt on user interaction');
-                updateMusicStatus(false);
-            });
-        }
-
-        // Function to start music
-        function startMusic() {
-            if (!isMusicPlaying) {
-                backgroundMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    updateMusicStatus(true);
-                    autoplayIndicator.classList.remove('show');
-                }).catch(error => {
-                    console.log('Music play failed:', error);
-                    showAutoplayPrompt();
-                });
-            }
-        }
-
-        // Function to stop music
-        function stopMusic() {
-            if (isMusicPlaying) {
-                backgroundMusic.pause();
-                isMusicPlaying = false;
-                updateMusicStatus(false);
-            }
-        }
-
-        // Show autoplay prompt
-        function showAutoplayPrompt() {
-            autoplayIndicator.classList.add('show');
-            setTimeout(() => {
-                autoplayIndicator.classList.remove('show');
-            }, 5000);
-        }
-
-        // Autoplay button click
-        autoplayButton.addEventListener('click', () => {
-            startMusic();
-        });
-
-        // Music toggle functionality
-        musicToggle.addEventListener('click', () => {
-            if (isMusicPlaying) {
-                stopMusic();
-            } else {
-                startMusic();
-            }
-        });
-
-        // Volume control
-        volumeSlider.addEventListener('input', (e) => {
-            backgroundMusic.volume = e.target.value / 100;
-        });
-
-        // Handle music events
-        backgroundMusic.addEventListener('play', () => {
-            isMusicPlaying = true;
-            updateMusicStatus(true);
-        });
-
-        backgroundMusic.addEventListener('pause', () => {
-            isMusicPlaying = false;
-            updateMusicStatus(false);
-        });
-
-        backgroundMusic.addEventListener('ended', () => {
-            backgroundMusic.currentTime = 0;
-            backgroundMusic.play().catch(error => {
-                console.log('Loop failed:', error);
-            });
-        });
-
-        backgroundMusic.addEventListener('loadstart', () => {
-            statusText.textContent = 'Loading...';
-        });
-
-        backgroundMusic.addEventListener('canplay', () => {
-            if (!autoplayAttempted) {
-                statusText.textContent = 'Ready';
-            }
-        });
-
-        // Initialize event listeners
-        document.getElementById('startButton').addEventListener('click', () => {
-            showPage('garden');
-            if (!isMusicPlaying && !autoplayAttempted) {
-                autoplayAttempted = true;
-                startMusic();
-            }
-        });
-
-        document.getElementById('gardenPrevButton').addEventListener('click', () => {
-            showPage('intro');
-        });
-
-        document.getElementById('gardenNextButton').addEventListener('click', () => {
-            showPage('touchGrow');
-        });
-
-        document.getElementById('touchPrevButton').addEventListener('click', () => {
-            showPage('garden');
-        });
-
-        // Garden Page functionality
+        // Garden Page
         let selectedFlower = 'mainTulip';
         const gardenGround = document.getElementById('gardenGround');
 
-        // Flower selection
         document.addEventListener('click', (e) => {
-            if (e.target.closest('.flower-option')) {
-                document.querySelectorAll('.flower-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                e.target.closest('.flower-option').classList.add('selected');
-                selectedFlower = e.target.closest('.flower-option').dataset.flower;
+            const option = e.target.closest('.flower-option');
+            if (option) {
+                document.querySelectorAll('.flower-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedFlower = option.dataset.flower;
             }
         });
 
-        // Plant flower functionality
-        function plantFlower(x, y) {
-            const flower = createPngFlower(selectedFlower);
-            
-            const groundRect = gardenGround.getBoundingClientRect();
-            const relativeX = x - groundRect.left;
-            const relativeY = y - groundRect.top;
-            
-            // Adjust offset based on screen size
-            const offset = window.innerWidth < 768 ? 30 : 40;
-            flower.style.left = `${relativeX - offset}px`;
-            flower.style.top = `${relativeY - offset}px`;
-            
+        function plantFlower(clientX, clientY) {
+            const rect = gardenGround.getBoundingClientRect();
+            if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) return;
+            const flower = createPngFlower(selectedFlower, 'planted');
+            const offsetX = clientX - rect.left - 35;
+            const offsetY = clientY - rect.top - 35;
+            flower.style.left = `${offsetX}px`;
+            flower.style.top = `${offsetY}px`;
             gardenGround.appendChild(flower);
-            
-            // Show letter message
             const messages = flowerData[selectedFlower].messages;
-            const message = messages[Math.floor(Math.random() * messages.length)];
-            showLetterMessage(x, y, message, gardenGround);
-            
-            // Special massive heart effects for main tulip
-            if (selectedFlower === 'mainTulip') {
-                createMassiveHeartEffect(x, y, gardenGround);
-            } else if (selectedFlower === 'tulip') {
-                createHeartEffect(x, y, gardenGround);
-            }
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            showLetterMessage(clientX, clientY, msg, gardenGround);
+            if (selectedFlower === 'mainTulip') createMassiveHeartEffect(clientX, clientY, gardenGround);
+            else if (selectedFlower === 'tulip') createHeartEffect(clientX, clientY, gardenGround);
         }
 
-        gardenGround.addEventListener('click', (e) => {
-            if (e.target === gardenGround) {
-                plantFlower(e.clientX, e.clientY);
-            }
+        gardenGround.addEventListener('click', (e) => { if (e.target === gardenGround) plantFlower(e.clientX, e.clientY); });
+        gardenGround.addEventListener('touchstart', (e) => { 
+            if (e.target === gardenGround) { 
+                e.preventDefault(); 
+                const t = e.touches[0]; 
+                plantFlower(t.clientX, t.clientY); 
+            } 
         });
 
-        gardenGround.addEventListener('touchstart', (e) => {
-            if (e.target === gardenGround) {
-                e.preventDefault();
-                const touch = e.touches[0];
-                plantFlower(touch.clientX, touch.clientY);
-            }
-        });
-
-        // Touch-to-Grow Page functionality (Magic Garden)
-        const touchGrowContainer = document.getElementById('touchGrowContainer');
-        
+        // Magic Garden page (touch-to-grow)
+        const touchContainer = document.getElementById('touchGrowContainer');
         function growRandomFlower(x, y) {
-            // Weighted random selection - more main tulips!
-            const rand = Math.random();
-            let randomType;
-            if (rand < 0.4) { // 40% chance for main tulip
-                randomType = 'mainTulip';
-            } else if (rand < 0.6) { // 20% chance for regular tulips
-                randomType = 'tulip';
-            } else if (rand < 0.8) { // 20% chance for rose
-                randomType = 'rose';
-            } else { // 20% chance for flower
-                randomType = 'flower';
-            }
-            
-            const flower = createPngFlower(randomType, 'grown');
-            
-            // Random scale for variety
-            const scale = Math.random() * 0.4 + 0.6;
+            const r = Math.random();
+            let type;
+            if (r < 0.4) type = 'mainTulip';
+            else if (r < 0.6) type = 'tulip';
+            else if (r < 0.8) type = 'rose';
+            else type = 'flower';
+            const flower = createPngFlower(type, 'grown');
+            const scale = 0.7 + Math.random() * 0.5;
             flower.style.transform = `scale(${scale})`;
-            
-            // Adjust offset based on screen size
-            const offset = window.innerWidth < 768 ? 40 : 50;
-            flower.style.left = `${x - offset}px`;
-            flower.style.top = `${y - offset}px`;
-            
-            touchGrowContainer.appendChild(flower);
-            
-            // Always create massive heart effects for main tulip
-            if (randomType === 'mainTulip') {
-                createMassiveHeartEffect(x, y, touchGrowContainer);
-            } else if (randomType === 'tulip') {
-                createHeartEffect(x, y, touchGrowContainer);
-            }
-            
-            // Remove flower after some time
-            setTimeout(() => {
-                flower.style.opacity = '0';
-                flower.style.transition = 'opacity 2s ease';
-                setTimeout(() => {
-                    flower.remove();
-                }, 2000);
-            }, 8000);
+            flower.style.left = `${x - 45}px`;
+            flower.style.top = `${y - 45}px`;
+            touchContainer.appendChild(flower);
+            if (type === 'mainTulip') createMassiveHeartEffect(x, y, touchContainer);
+            else if (type === 'tulip') createHeartEffect(x, y, touchContainer);
+            setTimeout(() => { 
+                flower.style.opacity = '0'; 
+                flower.style.transition = 'opacity 1.5s'; 
+                setTimeout(() => flower.remove(), 1700); 
+            }, 7000);
         }
-
-        // Click anywhere on the Magic Garden page to grow flowers
-        touchGrowContainer.addEventListener('click', (e) => {
-            // Don't grow flowers when clicking on buttons or hint
-            if (e.target.id !== 'touchPrevButton' && 
-                !e.target.classList.contains('nav-button') && 
-                !e.target.classList.contains('touch-hint')) {
+        
+        touchContainer.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-button') && !e.target.classList.contains('touch-hint')) {
                 growRandomFlower(e.clientX, e.clientY);
             }
         });
-
-        // Touch support for mobile
-        touchGrowContainer.addEventListener('touchstart', (e) => {
-            if (e.target.id !== 'touchPrevButton' && 
-                !e.target.classList.contains('nav-button') && 
-                !e.target.classList.contains('touch-hint')) {
-                e.preventDefault();
-                const touch = e.touches[0];
-                growRandomFlower(touch.clientX, touch.clientY);
+        
+        touchContainer.addEventListener('touchstart', (e) => {
+            if (!e.target.closest('.nav-button') && !e.target.classList.contains('touch-hint')) { 
+                e.preventDefault(); 
+                const t = e.touches[0]; 
+                growRandomFlower(t.clientX, t.clientY); 
             }
         });
 
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            // Recreate particles for new screen size
-            document.getElementById('bgParticles').innerHTML = '';
-            createBackgroundParticles();
-        });
-
-        // Handle orientation changes
-        window.addEventListener('orientationchange', () => {
+        // Clear Garden Functionality
+        function clearGarden() {
+            const flowers = gardenGround.querySelectorAll('.png-flower');
+            const messages = gardenGround.querySelectorAll('.letter-message');
+            const hearts = gardenGround.querySelectorAll('.heart-effect');
+            
+            // Add clearing animation to all elements
+            [...flowers, ...messages, ...hearts].forEach(element => {
+                element.classList.add('clearing');
+            });
+            
+            // Show clear message
+            const clearMsg = document.createElement('div');
+            clearMsg.classList.add('letter-message');
+            clearMsg.textContent = "🌸 Garden cleared! Ready for new flowers! 🌸";
+            clearMsg.style.left = '50%';
+            clearMsg.style.top = '50%';
+            clearMsg.style.transform = 'translate(-50%, -50%)';
+            clearMsg.style.fontSize = '1rem';
+            clearMsg.style.background = 'linear-gradient(135deg, #fff0f5, #ffe0f0)';
+            clearMsg.style.border = '2px solid #ff69b4';
+            gardenGround.appendChild(clearMsg);
+            
+            // Remove all elements after animation
             setTimeout(() => {
-                window.scrollTo(0, 0);
-                // Recreate particles for new orientation
-                document.getElementById('bgParticles').innerHTML = '';
-                createBackgroundParticles();
-            }, 100);
+                flowers.forEach(flower => flower.remove());
+                messages.forEach(msg => msg.remove());
+                hearts.forEach(heart => heart.remove());
+                clearMsg.remove();
+            }, 500);
+        }
+
+        // Clear button event listener
+        document.getElementById('clearButton').addEventListener('click', clearGarden);
+
+        // Page transitions
+        const pages = { 
+            intro: document.getElementById('introPage'), 
+            garden: document.getElementById('gardenPage'), 
+            touchGrow: document.getElementById('touchGrowPage') 
+        };
+        
+        function showPage(name) { 
+            Object.values(pages).forEach(p => p.classList.remove('active')); 
+            pages[name].classList.add('active'); 
+            window.scrollTo(0,0);
+            
+            // Show/hide clear button based on page
+            const clearBtn = document.getElementById('clearButton');
+            if (name === 'garden') {
+                clearBtn.style.display = 'flex';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+        }
+        
+        document.getElementById('startButton').onclick = () => showPage('garden');
+        document.getElementById('gardenPrevButton').onclick = () => showPage('intro');
+        document.getElementById('gardenNextButton').onclick = () => showPage('touchGrow');
+        document.getElementById('touchPrevButton').onclick = () => showPage('garden');
+
+        // ---------- MUSIC CONTROLS ----------
+        const bgMusic = document.getElementById('backgroundMusic');
+        const musicToggleBtn = document.getElementById('musicToggle');
+        const volumeSlider = document.getElementById('volumeSlider');
+        let musicPlaying = false;
+
+        function updateUI(playing) {
+            if (playing) {
+                musicToggleBtn.classList.add('playing');
+                musicToggleBtn.textContent = '⏸️';
+            } else {
+                musicToggleBtn.classList.remove('playing');
+                musicToggleBtn.textContent = '▶️';
+            }
+        }
+
+        function startMusic() {
+            bgMusic.play().then(() => {
+                musicPlaying = true;
+                updateUI(true);
+            }).catch(err => { 
+                console.warn("play blocked:", err); 
+                musicPlaying = false; 
+                updateUI(false); 
+            });
+        }
+
+        function stopMusic() {
+            bgMusic.pause();
+            musicPlaying = false;
+            updateUI(false);
+        }
+
+        musicToggleBtn.addEventListener('click', () => { 
+            musicPlaying ? stopMusic() : startMusic(); 
+        });
+        
+        volumeSlider.addEventListener('input', (e) => { 
+            bgMusic.volume = e.target.value / 100; 
+        });
+        
+        bgMusic.volume = 0.55;
+        bgMusic.addEventListener('ended', () => { 
+            bgMusic.currentTime = 0; 
+            if(musicPlaying) bgMusic.play().catch(e=>{}); 
         });
 
-        // Prevent double-tap zoom
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', (e) => {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                e.preventDefault();
+        // Auto-attempt on first click anywhere
+        let firstUserInteraction = false;
+        function enableMusicOnInteraction() {
+            if (!musicPlaying && !firstUserInteraction) {
+                firstUserInteraction = true;
+                startMusic();
             }
-            lastTouchEnd = now;
-        }, false);
+        }
+        document.addEventListener('click', enableMusicOnInteraction, { once: true });
+        document.addEventListener('touchstart', enableMusicOnInteraction, { once: true });
 
-        // Initialize the app
+        // init particles & flower selector
         window.addEventListener('load', () => {
             createBackgroundParticles();
-            initializeFlowerSelector();
-            
-            // Initialize music system
-            setTimeout(() => {
-                initializeMusic();
-            }, 500);
+            initFlowerSelector();
+            // Hide clear button initially
+            document.getElementById('clearButton').style.display = 'none';
         });
-
-        // Fallback: Try autoplay on first user interaction
-        document.addEventListener('click', function startMusicOnFirstClick(e) {
-            if (!isMusicPlaying && !autoplayAttempted) {
-                autoplayAttempted = true;
-                startMusic();
-            }
-            document.removeEventListener('click', startMusicOnFirstClick);
-        }, { once: true });
-
-        document.addEventListener('touchstart', function startMusicOnFirstTouch(e) {
-            if (!isMusicPlaying && !autoplayAttempted) {
-                autoplayAttempted = true;
-                startMusic();
-            }
-            document.removeEventListener('touchstart', startMusicOnFirstTouch);
-        }, { once: true });
-
-        // Keyboard shortcut for music
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && e.target === document.body) {
-                e.preventDefault();
-                musicToggle.click();
-            }
-        });
-
-        // Ensure music continues playing when page becomes visible again
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden && isMusicPlaying) {
-                backgroundMusic.play().catch(error => {
-                    console.log('Resume play failed:', error);
-                });
-            }
-        });
-
-        // Handle page focus/blur to maintain music playback
-        window.addEventListener('focus', () => {
-            if (isMusicPlaying) {
-                backgroundMusic.play().catch(error => {
-                    console.log('Focus play failed:', error);
-                });
-            }
+        
+        window.addEventListener('resize', () => { 
+            document.getElementById('bgParticles').innerHTML = ''; 
+            createBackgroundParticles(); 
         });
     </script>
 </body>
