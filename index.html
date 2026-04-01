@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Sweet Pixel Garden 💕</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', cursive;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd1e8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cute floating elements */
+        .cute-decoration {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .sparkle {
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 3s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .floating-bubble {
+            position: fixed;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(255, 105, 180, 0.2));
+            animation: float 8s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            33% { transform: translateY(-20px) translateX(10px); }
+            66% { transform: translateY(10px) translateX(-10px); }
+        }
+
+        /* Page styles */
+        .page {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced Intro Page */
+        .intro-container {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.2);
+            max-width: 500px;
+            border: 3px solid #ffb6c1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 182, 193, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .intro-title {
+            font-size: 2.5rem;
+            color: #ff69b4;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 0 rgba(255, 182, 193, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .intro-message {
+            font-size: 1.1rem;
+            color: #ff1493;
+            margin-bottom: 15px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .intro-submessage {
+            font-size: 0.9rem;
+            color: #db7093;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+        }
+
+        .start-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Enhanced Garden Page */
+        .garden-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(to bottom, #ffeef8 0%, #fff0f5 50%, #ffe4e1 100%);
+            overflow: hidden;
+        }
+
+        .flower-selector {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.3);
+            border: 3px solid #ffb6c1;
+            z-index: 10;
+        }
+
+        .flower-option {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border: 3px solid #ffc0cb;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flower-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .flower-option:hover::before {
+            opacity: 1;
+        }
+
+        .flower-option:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+            border-color: #ff69b4;
+        }
+
+        .flower-option.selected {
+            border-color: #ff1493;
+            background: linear-gradient(135deg, #ffeef8, #fff0f5);
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
+        }
+
+        .flower-option.selected::after {
+            content: '✨';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .garden-ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(144, 238, 144, 0.3), rgba(34, 139, 34, 0.4));
+            cursor: crosshair;
+            border-top: 3px dashed #90ee90;
+        }
+
+        .planting-message {
+            position: absolute;
+            background: linear-gradient(135deg, #fff, #ffeef8);
+            color: #ff1493;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+            border: 2px solid #ffb6c1;
+            animation: messageFloat 3s ease-out forwards;
+            pointer-events: none;
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        @keyframes messageFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.05);
+            }
+            40% {
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.9);
+            }
+        }
+
+        /* Enhanced Pixel Flowers */
+        .pixel-flower {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .pixel-flower:hover {
+            transform: scale(1.1);
+        }
+
+        /* Enhanced Pixel Rose */
+        .pixel-rose {
+            width: 80px;
+            height: 100px;
+            position: relative;
+        }
+
+        .pixel-rose .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 50px;
+            background: linear-gradient(to bottom, #4a7c59, #2d5a3f);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .pixel-rose .leaf {
+            position: absolute;
+            width: 16px;
+            height: 12px;
+            background: #5a8c69;
+            bottom: 25px;
+            border-radius: 50%;
+        }
+
+        .pixel-rose .leaf.left {
+            left: 20px;
+            transform: rotate(-30deg);
+        }
+
+        .pixel-rose .leaf.right {
+            right: 20px;
+            transform: rotate(30deg);
+        }
+
+        .pixel-rose .flower-head {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 64px;
+            height: 64px;
+        }
+
+        .pixel-rose .rose-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .pixel-rose .rose-layer-1 {
+            top: 8px;
+            left: 8px;
+            width: 48px;
+            height: 48px;
+            background: #ff6b9d;
+            clip-path: polygon(50% 0%, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0% 50%, 15% 15%);
+        }
+
+        .pixel-rose .rose-layer-2 {
+            top: 16px;
+            left: 16px;
+            width: 32px;
+            height: 32px;
+            background: #ff4d7d;
+            clip-path: polygon(50% 0%, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0% 50%, 15% 15%);
+        }
+
+        .pixel-rose .rose-center {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            width: 16px;
+            height: 16px;
+            background: #ff2e63;
+            border-radius: 50%;
+        }
+
+        /* Enhanced Pixel Tulip with Random Pink Colors */
+        .pixel-tulip {
+            width: 80px;
+            height: 100px;
+            position: relative;
+        }
+
+        .pixel-tulip .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 50px;
+            background: linear-gradient(to bottom, #4a7c59, #2d5a3f);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .pixel-tulip .leaf {
+            position: absolute;
+            width: 20px;
+            height: 16px;
+            background: #5a8c69;
+            bottom: 20px;
+            border-radius: 50%;
+        }
+
+        .pixel-tulip .leaf.left {
+            left: 16px;
+            transform: rotate(-25deg);
+        }
+
+        .pixel-tulip .leaf.right {
+            right: 16px;
+            transform: rotate(25deg);
+        }
+
+        .pixel-tulip .flower-head {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 56px;
+            height: 64px;
+        }
+
+        .pixel-tulip .tulip-petals {
+            position: relative;
+            width: 56px;
+            height: 48px;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+            transition: background 0.3s ease;
+        }
+
+        .pixel-tulip .tulip-highlight {
+            position: absolute;
+            top: 8px;
+            left: 16px;
+            width: 12px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+
+        /* Pink shade classes for tulips */
+        .tulip-pink-1 { background: linear-gradient(135deg, #ffb3d9, #ff99cc); }
+        .tulip-pink-2 { background: linear-gradient(135deg, #ff99cc, #ff80bf); }
+        .tulip-pink-3 { background: linear-gradient(135deg, #ff80bf, #ff66b3); }
+        .tulip-pink-4 { background: linear-gradient(135deg, #ff66b3, #ff4da6); }
+        .tulip-pink-5 { background: linear-gradient(135deg, #ff4da6, #ff3399); }
+        .tulip-pink-6 { background: linear-gradient(135deg, #ff3399, #ff1a8c); }
+        .tulip-pink-7 { background: linear-gradient(135deg, #ff99e6, #ff80d9); }
+        .tulip-pink-8 { background: linear-gradient(135deg, #ffcceb, #ffb3de); }
+
+        /* Enhanced Pixel Sunflower */
+        .pixel-sunflower {
+            width: 80px;
+            height: 100px;
+            position: relative;
+        }
+
+        .pixel-sunflower .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 50px;
+            background: linear-gradient(to bottom, #4a7c59, #2d5a3f);
+            border-radius: 0 0 5px 5px;
+        }
+
+        .pixel-sunflower .leaf {
+            position: absolute;
+            width: 24px;
+            height: 16px;
+            background: #5a8c69;
+            bottom: 25px;
+            border-radius: 50%;
+        }
+
+        .pixel-sunflower .leaf.left {
+            left: 12px;
+            transform: rotate(-35deg);
+        }
+
+        .pixel-sunflower .leaf.right {
+            right: 12px;
+            transform: rotate(35deg);
+        }
+
+        .pixel-sunflower .flower-head {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 72px;
+            height: 72px;
+        }
+
+        .pixel-sunflower .sun-petals {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .pixel-sunflower .sun-petal {
+            position: absolute;
+            width: 20px;
+            height: 12px;
+            background: linear-gradient(to right, #ffd93d, #ffed4e);
+            border-radius: 50%;
+        }
+
+        .pixel-sunflower .sun-petal:nth-child(1) { top: 8px; left: 26px; transform: rotate(0deg); }
+        .pixel-sunflower .sun-petal:nth-child(2) { top: 8px; left: 42px; transform: rotate(0deg); }
+        .pixel-sunflower .sun-petal:nth-child(3) { top: 20px; left: 8px; transform: rotate(-45deg); }
+        .pixel-sunflower .sun-petal:nth-child(4) { top: 20px; left: 60px; transform: rotate(45deg); }
+        .pixel-sunflower .sun-petal:nth-child(5) { top: 32px; left: 8px; transform: rotate(-45deg); }
+        .pixel-sunflower .sun-petal:nth-child(6) { top: 32px; left: 60px; transform: rotate(45deg); }
+        .pixel-sunflower .sun-petal:nth-child(7) { top: 44px; left: 26px; transform: rotate(90deg); }
+        .pixel-sunflower .sun-petal:nth-child(8) { top: 44px; left: 42px; transform: rotate(90deg); }
+
+        .pixel-sunflower .center {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 32px;
+            height: 32px;
+            background: radial-gradient(circle, #8b4513, #654321);
+            border-radius: 50%;
+        }
+
+        /* Enhanced Pixel Daisy */
+        .pixel-daisy {
+            width: 80px;
+            height: 100px;
+            position: relative;
+        }
+
+        .pixel-daisy .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 50px;
+            background: linear-gradient(to bottom, #4a7c59, #2d5a3f);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .pixel-daisy .leaf {
+            position: absolute;
+            width: 18px;
+            height: 14px;
+            background: #5a8c69;
+            bottom: 22px;
+            border-radius: 50%;
+        }
+
+        .pixel-daisy .leaf.left {
+            left: 18px;
+            transform: rotate(-30deg);
+        }
+
+        .pixel-daisy .leaf.right {
+            right: 18px;
+            transform: rotate(30deg);
+        }
+
+        .pixel-daisy .flower-head {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 72px;
+            height: 72px;
+        }
+
+        .pixel-daisy .daisy-petals {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .pixel-daisy .daisy-petal {
+            position: absolute;
+            width: 16px;
+            height: 24px;
+            background: linear-gradient(to bottom, #ffffff, #f8f8f8);
+            border: 2px solid #f0f0f0;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        }
+
+        .pixel-daisy .daisy-petal:nth-child(1) { top: 8px; left: 28px; transform: rotate(0deg); }
+        .pixel-daisy .daisy-petal:nth-child(2) { top: 8px; left: 44px; transform: rotate(0deg); }
+        .pixel-daisy .daisy-petal:nth-child(3) { top: 16px; left: 12px; transform: rotate(-45deg); }
+        .pixel-daisy .daisy-petal:nth-child(4) { top: 16px; left: 56px; transform: rotate(45deg); }
+        .pixel-daisy .daisy-petal:nth-child(5) { top: 28px; left: 12px; transform: rotate(-45deg); }
+        .pixel-daisy .daisy-petal:nth-child(6) { top: 28px; left: 56px; transform: rotate(45deg); }
+        .pixel-daisy .daisy-petal:nth-child(7) { top: 40px; left: 28px; transform: rotate(90deg); }
+        .pixel-daisy .daisy-petal:nth-child(8) { top: 40px; left: 44px; transform: rotate(90deg); }
+
+        .pixel-daisy .center {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle, #ffd93d, #ffb347);
+            border-radius: 50%;
+        }
+
+        /* Blooming animation */
+        @keyframes bloom {
+            0% {
+                transform: scale(0) translateY(20px);
+                opacity: 0;
+            }
+            30% {
+                transform: scale(0.3) translateY(15px);
+                opacity: 0.5;
+            }
+            60% {
+                transform: scale(0.7) translateY(5px);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .pixel-flower {
+            animation: bloom 0.8s ease-out;
+        }
+
+        /* Touch-to-Grow Page Styles */
+        .touch-grow-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #ffeef8 0%, #fff0f5 50%, #ffe4e1 100%);
+        }
+
+        .touch-hint {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #fff, #ffeef8);
+            padding: 15px 30px;
+            border: 3px solid #ff69b4;
+            color: #ff1493;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.3);
+            z-index: 10;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 25px;
+        }
+
+        .grown-pixel-flower {
+            position: absolute;
+            transform-origin: bottom center;
+            animation: bloom 1s ease-out;
+            pointer-events: none;
+        }
+
+        /* Enhanced Navigation buttons */
+        .nav-button {
+            position: absolute;
+            bottom: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #fff, #ffeef8);
+            border: 3px solid #ff69b4;
+            color: #ff1493;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 25px;
+            font-family: 'Fredoka', cursive;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+            background: linear-gradient(135deg, #ffeef8, #fff);
+        }
+
+        .nav-button:active {
+            transform: translateY(-1px);
+        }
+
+        .prev-button {
+            left: 20px;
+        }
+
+        .next-button {
+            right: 20px;
+        }
+
+        /* Enhanced Capture button */
+        .capture-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            border: 3px solid #ff1493;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+            border-radius: 25px;
+            font-family: 'Fredoka', cursive;
+        }
+
+        .capture-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.5);
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+        }
+
+        .capture-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Cute emoji decorations */
+        .emoji-decoration {
+            position: fixed;
+            font-size: 24px;
+            animation: emojiFloat 10s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes emojiFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(10px) rotate(-5deg); }
+            75% { transform: translateY(-10px) rotate(3deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .intro-title {
+                font-size: 2rem;
+            }
+
+            .intro-message {
+                font-size: 0.9rem;
+            }
+
+            .intro-submessage {
+                font-size: 0.7rem;
+            }
+
+            .flower-selector {
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .flower-option {
+                width: 60px;
+                height: 60px;
+            }
+
+            .pixel-flower {
+                width: 64px;
+                height: 80px;
+            }
+
+            .grown-pixel-flower {
+                transform: scale(0.8);
+            }
+
+            .capture-button {
+                font-size: 0.7rem;
+                padding: 10px 16px;
+            }
+
+            .nav-button {
+                font-size: 0.8rem;
+                padding: 10px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .intro-title {
+                font-size: 1.5rem;
+            }
+
+            .intro-message {
+                font-size: 0.8rem;
+            }
+
+            .intro-submessage {
+                font-size: 0.6rem;
+            }
+
+            .flower-option {
+                width: 50px;
+                height: 50px;
+            }
+
+            .pixel-flower {
+                width: 56px;
+                height: 70px;
+            }
+
+            .grown-pixel-flower {
+                transform: scale(0.7);
+            }
+
+            .capture-button {
+                font-size: 0.6rem;
+                padding: 8px 12px;
+            }
+
+            .nav-button {
+                font-size: 0.7rem;
+                padding: 8px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cute floating decorations -->
+    <div id="decorationsContainer"></div>
+
+    <!-- Page 1: Intro Page -->
+    <div class="page active" id="introPage">
+        <div class="intro-container">
+            <h1 class="intro-title">💕 Our Sweet Garden 💕</h1>
+            <p class="intro-message">
+                Welcome to our magical pixel garden!
+            </p>
+            <p class="intro-submessage">
+                I created this special place just for you! 🌸
+                Plant beautiful flowers and watch our love bloom.
+                Each flower holds a special memory of us.
+                Don't forget to save your garden - it's our little piece of forever! 💖
+            </p>
+            <button class="start-button" id="startButton">✨ Let's Plant! ✨</button>
+        </div>
+    </div>
+
+    <!-- Page 2: Garden Page -->
+    <div class="page" id="gardenPage">
+        <div class="garden-container">
+            <div class="flower-selector">
+                <div class="flower-option selected" data-flower="rose">
+                    <div class="pixel-rose">
+                        <div class="stem"></div>
+                        <div class="leaf left"></div>
+                        <div class="leaf right"></div>
+                        <div class="flower-head">
+                            <div class="rose-layer rose-layer-1"></div>
+                            <div class="rose-layer rose-layer-2"></div>
+                            <div class="rose-center"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flower-option" data-flower="tulip">
+                    <div class="pixel-tulip">
+                        <div class="stem"></div>
+                        <div class="leaf left"></div>
+                        <div class="leaf right"></div>
+                        <div class="flower-head">
+                            <div class="tulip-petals tulip-pink-1">
+                                <div class="tulip-highlight"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flower-option" data-flower="sunflower">
+                    <div class="pixel-sunflower">
+                        <div class="stem"></div>
+                        <div class="leaf left"></div>
+                        <div class="leaf right"></div>
+                        <div class="flower-head">
+                            <div class="sun-petals">
+                                <div class="sun-petal"></div>
+                                <div class="sun-petal"></div>
+                                <div class="sun-petal"></div>
+                                <div class="sun-petal"></div>
+                                <div class="sun-petal"></div>
+                                <div class="sun-petal"></div>
+                                <div class="sun-petal"></div>
+                                <div class="sun-petal"></div>
+                            </div>
+                            <div class="center"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flower-option" data-flower="daisy">
+                    <div class="pixel-daisy">
+                        <div class="stem"></div>
+                        <div class="leaf left"></div>
+                        <div class="leaf right"></div>
+                        <div class="flower-head">
+                            <div class="daisy-petals">
+                                <div class="daisy-petal"></div>
+                                <div class="daisy-petal"></div>
+                                <div class="daisy-petal"></div>
+                                <div class="daisy-petal"></div>
+                                <div class="daisy-petal"></div>
+                                <div class="daisy-petal"></div>
+                                <div class="daisy-petal"></div>
+                                <div class="daisy-petal"></div>
+                            </div>
+                            <div class="center"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="capture-button" id="captureButton">📸 Save Our Garden</button>
+            <div class="garden-ground" id="gardenGround"></div>
+            <button class="nav-button prev-button" id="gardenPrevButton">💕 Back</button>
+            <button class="nav-button next-button" id="gardenNextButton">🌸 Touch Grow</button>
+        </div>
+    </div>
+
+    <!-- Page 3: Touch-to-Grow Page -->
+    <div class="page" id="touchGrowPage">
+        <div class="touch-grow-container" id="touchGrowContainer">
+            <div class="touch-hint">🌸 Touch to Bloom 🌸</div>
+            <button class="nav-button prev-button" id="touchPrevButton">💕 Back</button>
+        </div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        // Create cute floating decorations
+        function createCuteDecorations() {
+            const container = document.getElementById('decorationsContainer');
+            const emojis = ['💕', '🌸', '✨', '💖', '🌷', '💝', '🌹', '💗'];
+            const colors = ['#ffb6c1', '#ffc0cb', '#ff69b4', '#ff1493', '#ff80bf', '#ff99cc'];
+            
+            // Create floating bubbles
+            for (let i = 0; i < 8; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('floating-bubble');
+                bubble.style.width = `${Math.random() * 60 + 20}px`;
+                bubble.style.height = bubble.style.width;
+                bubble.style.left = `${Math.random() * 100}%`;
+                bubble.style.top = `${Math.random() * 100}%`;
+                bubble.style.animationDelay = `${Math.random() * 8}s`;
+                bubble.style.animationDuration = `${Math.random() * 4 + 8}s`;
+                container.appendChild(bubble);
+            }
+            
+            // Create sparkles
+            for (let i = 0; i < 15; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle', 'cute-decoration');
+                sparkle.style.left = `${Math.random() * 100}%`;
+                sparkle.style.top = `${Math.random() * 100}%`;
+                sparkle.style.animationDelay = `${Math.random() * 3}s`;
+                container.appendChild(sparkle);
+            }
+            
+            // Create floating emojis
+            for (let i = 0; i < 6; i++) {
+                const emoji = document.createElement('div');
+                emoji.classList.add('emoji-decoration');
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = `${Math.random() * 90}%`;
+                emoji.style.top = `${Math.random() * 90}%`;
+                emoji.style.animationDelay = `${Math.random() * 10}s`;
+                emoji.style.animationDuration = `${Math.random() * 5 + 10}s`;
+                container.appendChild(emoji);
+            }
+        }
+
+        // Random loving messages for planting
+        const lovingMessages = [
+            "Each flower blooms with our love! 💕",
+            "Growing our sweet garden together! 🌱",
+            "Planting memories, one flower at a time! 🌸",
+            "Our love grows stronger with each bloom! 🌺",
+            "Creating beauty in our pixel world! 🌻",
+            "Every flower tells our love story! 🌷",
+            "Love is in full bloom! 🌹",
+            "Growing together in this magical garden! 🌼",
+            "Each petal holds our special moments! 💐",
+            "Our digital love garden flourishes! 🌿",
+            "Planting seeds of happiness! 🌸",
+            "Love blooms eternally here! 💕",
+            "Our garden of sweet dreams! 🌺",
+            "Together we create magic! ✨",
+            "Every flower is our promise! 🌹",
+            "Blooming with love just for you! 💖",
+            "Our garden grows with each touch! 🌷",
+            "Sweet flowers for my sweet love! 🌸"
+        ];
+
+        // Show planting message
+        function showPlantingMessage(x, y) {
+            const message = lovingMessages[Math.floor(Math.random() * lovingMessages.length)];
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('planting-message');
+            messageElement.textContent = message;
+            
+            // Position the message near the click
+            messageElement.style.left = `${x - 150}px`;
+            messageElement.style.top = `${y - 40}px`;
+            
+            // Ensure message stays within bounds
+            const containerRect = document.querySelector('.garden-container').getBoundingClientRect();
+            if (x - 150 < 10) {
+                messageElement.style.left = '10px';
+            }
+            if (x + 150 > containerRect.width) {
+                messageElement.style.left = `${containerRect.width - 310}px`;
+            }
+            
+            document.querySelector('.garden-container').appendChild(messageElement);
+            
+            // Remove message after animation
+            setTimeout(() => {
+                messageElement.remove();
+            }, 3000);
+        }
+
+        // Page navigation
+        const pages = {
+            intro: document.getElementById('introPage'),
+            garden: document.getElementById('gardenPage'),
+            touchGrow: document.getElementById('touchGrowPage')
+        };
+
+        function showPage(pageName) {
+            Object.values(pages).forEach(page => {
+                page.classList.remove('active');
+            });
+            pages[pageName].classList.add('active');
+        }
+
+        // Initialize event listeners
+        document.getElementById('startButton').addEventListener('click', () => {
+            showPage('garden');
+        });
+
+        document.getElementById('gardenPrevButton').addEventListener('click', () => {
+            showPage('intro');
+        });
+
+        document.getElementById('gardenNextButton').addEventListener('click', () => {
+            showPage('touchGrow');
+        });
+
+        document.getElementById('touchPrevButton').addEventListener('click', () => {
+            showPage('garden');
+        });
+
+        // Garden Page functionality
+        let selectedFlower = 'rose';
+        const flowerOptions = document.querySelectorAll('.flower-option');
+        const gardenGround = document.getElementById('gardenGround');
+
+        flowerOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                flowerOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedFlower = option.dataset.flower;
+            });
+        });
+
+        // Create enhanced pixel flower element
+        function createPixelFlower(type) {
+            const flower = document.createElement('div');
+            flower.classList.add('pixel-flower');
+            
+            switch(type) {
+                case 'rose':
+                    flower.innerHTML = `
+                        <div class="pixel-rose">
+                            <div class="stem"></div>
+                            <div class="leaf left"></div>
+                            <div class="leaf right"></div>
+                            <div class="flower-head">
+                                <div class="rose-layer rose-layer-1"></div>
+                                <div class="rose-layer rose-layer-2"></div>
+                                <div class="rose-center"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'tulip':
+                    // Random pink shade for tulip
+                    const pinkShade = Math.floor(Math.random() * 8) + 1;
+                    flower.innerHTML = `
+                        <div class="pixel-tulip">
+                            <div class="stem"></div>
+                            <div class="leaf left"></div>
+                            <div class="leaf right"></div>
+                            <div class="flower-head">
+                                <div class="tulip-petals tulip-pink-${pinkShade}">
+                                    <div class="tulip-highlight"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'sunflower':
+                    flower.innerHTML = `
+                        <div class="pixel-sunflower">
+                            <div class="stem"></div>
+                            <div class="leaf left"></div>
+                            <div class="leaf right"></div>
+                            <div class="flower-head">
+                                <div class="sun-petals">
+                                    <div class="sun-petal"></div>
+                                    <div class="sun-petal"></div>
+                                    <div class="sun-petal"></div>
+                                    <div class="sun-petal"></div>
+                                    <div class="sun-petal"></div>
+                                    <div class="sun-petal"></div>
+                                    <div class="sun-petal"></div>
+                                    <div class="sun-petal"></div>
+                                </div>
+                                <div class="center"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'daisy':
+                    flower.innerHTML = `
+                        <div class="pixel-daisy">
+                            <div class="stem"></div>
+                            <div class="leaf left"></div>
+                            <div class="leaf right"></div>
+                            <div class="flower-head">
+                                <div class="daisy-petals">
+                                    <div class="daisy-petal"></div>
+                                    <div class="daisy-petal"></div>
+                                    <div class="daisy-petal"></div>
+                                    <div class="daisy-petal"></div>
+                                    <div class="daisy-petal"></div>
+                                    <div class="daisy-petal"></div>
+                                    <div class="daisy-petal"></div>
+                                    <div class="daisy-petal"></div>
+                                </div>
+                                <div class="center"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            return flower;
+        }
+
+        // Flower planting functionality
+        function plantFlower(x, y) {
+            const flower = createPixelFlower(selectedFlower);
+            
+            // Position the flower
+            const groundRect = gardenGround.getBoundingClientRect();
+            const relativeX = x - groundRect.left;
+            const relativeY = y - groundRect.top;
+            
+            flower.style.left = `${relativeX - 40}px`;
+            flower.style.top = `${relativeY - 50}px`;
+            
+            gardenGround.appendChild(flower);
+            
+            // Show loving message
+            showPlantingMessage(x, y);
+        }
+
+        // Add click event to garden ground
+        gardenGround.addEventListener('click', (e) => {
+            plantFlower(e.clientX, e.clientY);
+        });
+
+        // Touch support for mobile
+        gardenGround.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            plantFlower(touch.clientX, touch.clientY);
+        });
+
+        // Touch-to-Grow Page functionality
+        const touchGrowContainer = document.getElementById('touchGrowContainer');
+        
+        function growRandomFlower(x, y) {
+            const flowerTypes = ['rose', 'tulip', 'sunflower', 'daisy'];
+            const randomType = flowerTypes[Math.floor(Math.random() * flowerTypes.length)];
+            const flower = createPixelFlower(randomType);
+            flower.classList.add('grown-pixel-flower');
+            
+            // Random size variation
+            const scale = Math.random() * 0.4 + 0.8;
+            flower.style.transform = `scale(${scale})`;
+            
+            // Position the flower
+            flower.style.left = `${x - 40}px`;
+            flower.style.top = `${y - 50}px`;
+            
+            touchGrowContainer.appendChild(flower);
+            
+            // Remove flower after some time to prevent overcrowding
+            setTimeout(() => {
+                flower.style.opacity = '0';
+                flower.style.transition = 'opacity 2s ease';
+                setTimeout(() => {
+                    flower.remove();
+                }, 2000);
+            }, 8000);
+        }
+
+        // Add click and touch events to touch-grow container
+        touchGrowContainer.addEventListener('click', (e) => {
+            if (e.target.id !== 'touchPrevButton' && !e.target.classList.contains('nav-button') && !e.target.classList.contains('touch-hint')) {
+                growRandomFlower(e.clientX, e.clientY);
+            }
+        });
+
+        touchGrowContainer.addEventListener('touchstart', (e) => {
+            if (e.target.id !== 'touchPrevButton' && !e.target.classList.contains('nav-button') && !e.target.classList.contains('touch-hint')) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                growRandomFlower(touch.clientX, touch.clientY);
+            }
+        });
+
+        // Capture and download garden functionality
+        document.getElementById('captureButton').addEventListener('click', () => {
+            // Temporarily hide UI elements for clean capture
+            const elementsToHide = [
+                document.querySelector('.flower-selector'),
+                document.querySelector('.capture-button'),
+                document.querySelector('.prev-button'),
+                document.querySelector('.next-button')
+            ];
+            
+            elementsToHide.forEach(el => {
+                if (el) el.style.display = 'none';
+            });
+
+            // Capture the garden
+            html2canvas(document.querySelector('.garden-container'), {
+                backgroundColor: null,
+                scale: 2
+            }).then(canvas => {
+                // Restore UI elements
+                elementsToHide.forEach(el => {
+                    if (el) el.style.display = '';
+                });
+
+                // Create download link
+                const link = document.createElement('a');
+                link.download = `our-sweet-garden-${Date.now()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+
+                // Show success message
+                const successMessage = document.createElement('div');
+                successMessage.classList.add('planting-message');
+                successMessage.textContent = 'Garden saved forever! 💕';
+                successMessage.style.left = '50%';
+                successMessage.style.top = '50%';
+                successMessage.style.transform = 'translate(-50%, -50%)';
+                successMessage.style.position = 'fixed';
+                successMessage.style.zIndex = '1000';
+                
+                document.body.appendChild(successMessage);
+                
+                setTimeout(() => {
+                    successMessage.remove();
+                }, 2000);
+            });
+        });
+
+        // Initialize the app
+        createCuteDecorations();
+    </script>
+</body>
+</html>
